@@ -4,6 +4,7 @@ import com.CURD.exception.ResourceNotFoundException;
 import com.CURD.model.Employee;
 import com.CURD.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,13 +26,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findAll();
     }
 
-    @Override
-    public Employee getEmployeeById(Long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId).get();
 
-        return employee;
-    }
-
+//    -------------------------------------------------------------------------------------------------------------
+//    @Override
+//    public Employee getEmployeeById(Long employeeId) {
+//        Employee employee = employeeRepository.findById(employeeId).get();
+//
+//        return employee;
+//    }
 
     // another way to get employee by ID:
 //    @Override
@@ -40,6 +42,45 @@ public class EmployeeServiceImpl implements EmployeeService {
 //
 //        return optionalEmployee.get();
 //    }
+//    -------------------------------------------------------------------------------------------------------------
+
+
+    //1st: functional way:
+//    @Override
+//    public Employee getEmployeeById(Long employeeId) {
+//        Employee employee = employeeRepository.findById(employeeId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+//
+//        return employee;
+//    }
+
+
+
+    //2nd: using try catch way:
+//    @Override
+//    public Employee getEmployeeById(Long employeeId) {
+//        Employee employee = null;
+//        try {
+//            employee = employeeRepository.findById(employeeId)
+//                    .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+//        } catch (ResourceNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return employee;
+//    }
+
+    //3rd: Sneaky way:
+    @SneakyThrows
+    @Override
+    public Employee getEmployeeById(Long employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+
+        return employee;
+    }
+
+
 
     @Override
     public Employee updateEmployee(Employee employee) {

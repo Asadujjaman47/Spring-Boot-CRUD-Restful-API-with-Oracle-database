@@ -38,11 +38,23 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
-    @GetMapping("/employees/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId){
-        Employee employee = employeeService.getEmployeeById(employeeId);
 
-        return ResponseEntity.ok().body(employee);
+    // normal way:
+//    @GetMapping("/employees/{id}")
+//    public ResponseEntity<Employee> getEmployeeById(@PathVariable(value = "id") Long employeeId){
+//        Employee employee = employeeService.getEmployeeById(employeeId);
+//
+//        return ResponseEntity.ok().body(employee);
+//    }
+
+//    @GetMapping("/employees/{id}")
+//    public Employee getEmployeeById(@PathVariable(value = "id") Long employeeId) throws ResourceNotFoundException {
+//        return employeeService.getEmployeeById(employeeId);
+//    }
+
+    @GetMapping("/employees/{id}")
+    public Employee getEmployeeById(@PathVariable(value = "id") Long employeeId) {
+        return employeeService.getEmployeeById(employeeId);
     }
 
 
